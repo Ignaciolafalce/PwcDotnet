@@ -23,11 +23,11 @@ public class Rental : Entity, IAggregateRoot
 
     public static Rental Create(int customerId, int carId, RentalPeriod period)
     {
-        if (customerId == int.Empty)
-            throw new RentalDomainException("Customer ID is required");
+        if (customerId <= 0)
+            throw new RentalDomainException("Customer ID must be grater than 0");
 
-        if (carId == int.Empty)
-            throw new RentalDomainException("Car ID is required");
+        if (carId <= 0)
+            throw new RentalDomainException("Car ID must be grater than 0");
 
         if (period == null)
             throw new RentalDomainException("Rental period is required");
