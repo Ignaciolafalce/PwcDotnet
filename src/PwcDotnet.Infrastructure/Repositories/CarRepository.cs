@@ -22,6 +22,7 @@ public class CarRepository : EfRepository<Car>, ICarRepository
     {
         var cars = await _context.Cars
             .Include(c => c.Services)
+            .Include(c => c.Location)
             .AsNoTracking()
             .ToListAsync();
 
@@ -34,6 +35,7 @@ public class CarRepository : EfRepository<Car>, ICarRepository
     {
         return await _context.Cars
             .Include(c => c.Services.Where(s => range.Contains(s.Date)))
+            .Include(c => c.Location)
             .AsNoTracking()
             .ToListAsync();
     }

@@ -12,6 +12,7 @@ public class RentalRepository : EfRepository<Rental>, IRentalRepository
     {
         var query = _context.Rentals
             .Include(r => r.Car)
+            .ThenInclude(c => c.Location)
             .AsNoTracking()
             .Where(r => r.Period.Start <= to && r.Period.End >= from);
 
