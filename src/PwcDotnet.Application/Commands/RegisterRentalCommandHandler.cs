@@ -1,19 +1,21 @@
-﻿namespace PwcDotnet.Application.Commands;
+﻿using PwcDotnet.Application.Interfaces;
+
+namespace PwcDotnet.Application.Commands;
 
 public class RegisterRentalCommandHandler : IRequestHandler<RegisterRentalCommand, int>
 {
     private readonly IRentalRepository _rentalRepository;
     private readonly ICarRepository _carRepository;
-    private readonly IUnitOfWork _unitOfWork;
+    private readonly ICurrentUserService _currentUser;
 
     public RegisterRentalCommandHandler(
         IRentalRepository rentalRepository,
         ICarRepository carRepository,
-        IUnitOfWork unitOfWork)
+        ICurrentUserService currentUser)
     {
         _rentalRepository = rentalRepository;
         _carRepository = carRepository;
-        _unitOfWork = unitOfWork;
+        _currentUser = currentUser;
     }
 
     public async Task<int> Handle(RegisterRentalCommand request, CancellationToken cancellationToken)
@@ -34,9 +36,10 @@ public class RegisterRentalCommandHandler : IRequestHandler<RegisterRentalComman
         }
 
         var rental = Rental.Create(request.CustomerId, request.CarId, period);
+        rental.LinkToUser(_currentUser.UserId!);
 
         await _rentalRepository.AddAsync(rental);
-        await _unitOfWork.SaveEntitiesAsync(cancellationToken);
+        await _rentalRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken);
 
         return rental.Id;
     }

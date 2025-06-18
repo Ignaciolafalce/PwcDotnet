@@ -3,12 +3,10 @@
 public class CancelRentalCommandHandler : IRequestHandler<CancelRentalCommand, bool>
 {
     private readonly IRentalRepository _rentalRepository;
-    private readonly IUnitOfWork _unitOfWork;
 
-    public CancelRentalCommandHandler(IRentalRepository rentalRepository, IUnitOfWork unitOfWork)
+    public CancelRentalCommandHandler(IRentalRepository rentalRepository)
     {
         _rentalRepository = rentalRepository;
-        _unitOfWork = unitOfWork;
     }
 
     public async Task<bool> Handle(CancelRentalCommand request, CancellationToken cancellationToken)
@@ -22,7 +20,7 @@ public class CancelRentalCommandHandler : IRequestHandler<CancelRentalCommand, b
 
         rental.Cancel();
 
-        var result = await _unitOfWork.SaveEntitiesAsync(cancellationToken);
+        var result = await _rentalRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken);
         return result;
     }
 }

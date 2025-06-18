@@ -4,16 +4,13 @@ public class ModifyRentalCommandHandler : IRequestHandler<ModifyRentalCommand, b
 {
     private readonly IRentalRepository _rentalRepository;
     private readonly ICarRepository _carRepository;
-    private readonly IUnitOfWork _unitOfWork;
 
     public ModifyRentalCommandHandler(
         IRentalRepository rentalRepository,
-        ICarRepository carRepository,
-        IUnitOfWork unitOfWork)
+        ICarRepository carRepository)
     {
         _rentalRepository = rentalRepository;
         _carRepository = carRepository;
-        _unitOfWork = unitOfWork;
     }
 
     public async Task<bool> Handle(ModifyRentalCommand request, CancellationToken cancellationToken)
@@ -51,7 +48,7 @@ public class ModifyRentalCommandHandler : IRequestHandler<ModifyRentalCommand, b
             rental.ChangePeriod(newPeriod);
         }
 
-        var result = await _unitOfWork.SaveEntitiesAsync(cancellationToken);
+        var result = await _rentalRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken);
         return result;
     }
 }
