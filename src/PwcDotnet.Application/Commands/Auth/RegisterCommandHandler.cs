@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using PwcDotnet.Application.Common.Auth;
 using PwcDotnet.Application.Common.Auth.IdentityEntities;
 using PwcDotnet.Application.Common.Auth.Interfaces;
 
@@ -32,7 +33,7 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, TokenDto>
             throw new ApplicationException($"User registration failed: {errors}");
         }
 
-        await _userManager.AddToRoleAsync(user, "User"); // Default role assignment, can be customized
+        await _userManager.AddToRoleAsync(user, RoleConstants.Admin); // Default role assignment, can be other
 
         var roles = await _userManager.GetRolesAsync(user);
 
