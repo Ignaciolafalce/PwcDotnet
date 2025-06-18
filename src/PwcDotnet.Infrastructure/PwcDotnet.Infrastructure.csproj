@@ -7,13 +7,15 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<Folder Include="IntegrationEventHandlers\" />
+		<Folder Include="Common\" />
+		<Folder Include="Data\Configuration\" />
+		<Folder Include="Data\EF\" />
+		<Folder Include="Data\Repositories\" />
+		<Folder Include="Services\" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="FluentValidation" Version="12.0.0" />
-		<PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.0.0" />
-		<PackageReference Include="MediatR" Version="12.5.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.3.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="9.0.6" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.6" />
 		<PackageReference Include="Microsoft.IdentityModel.Tokens" Version="8.5.0" />
@@ -21,6 +23,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\PwcDotnet.Application\PwcDotnet.Application.csproj" />
 		<ProjectReference Include="..\PwcDotnet.Domain\PwcDotnet.Domain.csproj" />
 	</ItemGroup>
 

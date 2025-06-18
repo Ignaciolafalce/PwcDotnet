@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using PwcDotnet.Application.Extensions;
 
-namespace PwcDotnet.Application.Behaviors;
+namespace PwcDotnet.Application.Common.Behaviors;
 
 public class ValidatorBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : IRequest<TResponse>
 {
