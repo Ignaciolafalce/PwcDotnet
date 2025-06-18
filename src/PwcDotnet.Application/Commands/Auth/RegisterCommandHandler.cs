@@ -33,7 +33,7 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, TokenDto>
             throw new ApplicationException($"User registration failed: {errors}");
         }
 
-        await _userManager.AddToRoleAsync(user, RoleConstants.Admin); // Default role assignment, can be other
+        await _userManager.AddToRoleAsync(user, RoleConstants.Manager); // Default role assignment, can be other
 
         var roles = await _userManager.GetRolesAsync(user);
 
