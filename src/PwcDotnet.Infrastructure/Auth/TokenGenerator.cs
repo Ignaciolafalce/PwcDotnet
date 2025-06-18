@@ -40,7 +40,7 @@ public class TokenGenerator : ITokenGenerator
 
         return new TokenDto
         {
-            AccessToken = new JwtSecurityTokenHandler().WriteToken(token),
+            AccessToken = "Bearer " + new JwtSecurityTokenHandler().WriteToken(token),
             Expiration = token.ValidTo,
             Email = user.Email ?? string.Empty
         };
