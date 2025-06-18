@@ -14,7 +14,7 @@ public class GetTopCarsByBrandModelTypeQueryHandler : IRequestHandler<GetTopCars
         var rentals = await _rentalRepository.GetRentalsByDateRangeAsync(request.FromDate, request.ToDate, request.LocationId);
 
         var grouped = rentals
-            .GroupBy(r => new { r.Car.Brand, r.Car.Model, r.Car.Type.Name })
+            .GroupBy(r => new { r.Car.Brand, r.Car.Model, r.Car.Type.Name, r.Car.Location.Name })
             .OrderByDescending(g => g.Count())
             .Select(g => new TopCarGroupDto
             {
