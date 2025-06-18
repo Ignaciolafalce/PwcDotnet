@@ -34,6 +34,11 @@ public class CarEntityTypeConfiguration : IEntityTypeConfiguration<Car>
             .HasForeignKey("CarId")
             .OnDelete(DeleteBehavior.Cascade);
 
+        builder.HasOne(c => c.Location)
+            .WithMany()
+            .HasForeignKey(l => l.LocationId)
+            .OnDelete(DeleteBehavior.Restrict);
+
         builder.Property(c => c.IdentityGuid)
             .HasMaxLength(200);
 
