@@ -7,9 +7,9 @@ public class RentalCreatedDomainEventHandler : INotificationHandler<RentalCreate
 {
 
     // repositories, services, or other dependencies can be injected here
-    private readonly ILogger _logger;
+    private readonly ILogger<RentalCreatedDomainEventHandler> _logger;
 
-    public RentalCreatedDomainEventHandler(ILogger logger)
+    public RentalCreatedDomainEventHandler(ILogger<RentalCreatedDomainEventHandler> logger)
     {
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
