@@ -2,6 +2,7 @@
 
 public class Car : Entity, IAggregateRoot
 {
+    public string Brand { get; private set; }
     public string Model { get; private set; }
     public CarType Type { get; private set; }
 
@@ -10,8 +11,11 @@ public class Car : Entity, IAggregateRoot
 
     protected Car() { }
 
-    public Car(string model, CarType type)
+    public Car(string brand, string model, CarType type)
     {
+        if (string.IsNullOrWhiteSpace(model))
+            throw new RentalDomainException("Car Brand is required");
+
         if (string.IsNullOrWhiteSpace(model))
             throw new RentalDomainException("Car model is required");
 
@@ -19,6 +23,7 @@ public class Car : Entity, IAggregateRoot
         Type = type ?? throw new ArgumentNullException(nameof(type));
     }
 
+    // this could be use in later functionaties out of the scope of the challenge
     public void ScheduleService(DateTime date)
     {
         _services.Add(new Service(date));

@@ -2,6 +2,7 @@
 
 public interface ICarRepository : IRepository<Car>
 {
-    Task<IEnumerable<Car>> GetAvailableCarsAsync(RentalPeriod period, CarType? type = null);
+    Task<List<Car>> GetAllAsync(int? locationId = null);
+    Task<IEnumerable<Car>> GetAvailableCarsAsync(DateRange range, CarType? filterType = null);
     Task<IEnumerable<Car>> GetCarsWithServicesInRangeAsync(DateRange range);
 }

@@ -2,6 +2,8 @@
 
 public interface IRentalRepository : IRepository<Rental>
 {
-    Task<IEnumerable<Rental>> GetRentalsByCustomerIdAsync(Guid customerId);
-    Task<bool> IsCarAvailableAsync(Guid carId, RentalPeriod period);
+    Task<List<Rental>> GetRentalsByDateRangeAsync(DateTime from, DateTime to, int? locationId = null);
+    Task<IEnumerable<Rental>> GetRentalsByCustomerIdAsync(int customerId);
+    Task<bool> IsCarAvailableAsync(int carId, RentalPeriod period);
+    Task<bool> IsCarReservedInPeriodAsync(int carId, RentalPeriod period, int? excludeRentalId = null);
 }
