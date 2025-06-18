@@ -2,6 +2,7 @@
 
 public class Rental : Entity, IAggregateRoot
 {
+    public string IdentityGuid { get; private set; } = default!;
     public int CustomerId { get; private set; }
     public Customer Customer { get; private set; } = default!;
     public int CarId { get; private set; }
@@ -66,4 +67,8 @@ public class Rental : Entity, IAggregateRoot
     }
 
     public bool CanBeCancelled() => Period.Start > DateTime.UtcNow;
+    public void LinkToUser(string userId)
+    {
+        IdentityGuid = userId;
+    }
 }

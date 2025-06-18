@@ -2,6 +2,7 @@
 
 public class Customer : Entity, IAggregateRoot
 {
+    public string IdentityGuid { get; private set; } = default!;
     public string FullName { get; private set; }
     public Address Address { get; private set; }
     public string Email { get; private set; }
@@ -21,5 +22,9 @@ public class Customer : Entity, IAggregateRoot
     public void UpdateAddress(Address newAddress)
     {
         Address = newAddress ?? throw new ArgumentNullException(nameof(newAddress));
+    }
+    public void LinkToUser(string userId)
+    {
+        IdentityGuid = userId;
     }
 }

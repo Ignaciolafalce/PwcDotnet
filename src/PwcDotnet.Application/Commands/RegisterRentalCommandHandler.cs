@@ -36,7 +36,7 @@ public class RegisterRentalCommandHandler : IRequestHandler<RegisterRentalComman
         var rental = Rental.Create(request.CustomerId, request.CarId, period);
 
         await _rentalRepository.AddAsync(rental);
-        await _unitOfWork.SaveChangesAsync(cancellationToken);
+        await _unitOfWork.SaveEntitiesAsync(cancellationToken);
 
         return rental.Id;
     }

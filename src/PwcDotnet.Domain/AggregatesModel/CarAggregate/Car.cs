@@ -2,8 +2,10 @@
 
 public class Car : Entity, IAggregateRoot
 {
+    public string IdentityGuid { get; private set; } = default!;
     public string Brand { get; private set; }
     public string Model { get; private set; }
+    public int LocationId { get; private set; } = default!;
     public CarType Type { get; private set; }
 
     private readonly List<Service> _services = new();
@@ -37,5 +39,9 @@ public class Car : Entity, IAggregateRoot
     public bool IsAvailable(DateRange range)
     {
         return !HasServiceIn(range);
+    }
+    public void LinkToUser(string userId)
+    {
+        IdentityGuid = userId;
     }
 }

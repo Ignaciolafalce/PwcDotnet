@@ -51,7 +51,7 @@ public class ModifyRentalCommandHandler : IRequestHandler<ModifyRentalCommand, b
             rental.ChangePeriod(newPeriod);
         }
 
-        var result = await _unitOfWork.SaveChangesAsync(cancellationToken);
-        return result > 0;
+        var result = await _unitOfWork.SaveEntitiesAsync(cancellationToken);
+        return result;
     }
 }

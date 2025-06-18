@@ -17,7 +17,7 @@ public class RegisterCustomerCommandHandler : IRequestHandler<RegisterCustomerCo
         var customer = new Customer(request.FullName, address, request.Email);
 
         await _customerRepository.AddAsync(customer);
-        await _unitOfWork.SaveChangesAsync(cancellationToken);
+        await _unitOfWork.SaveEntitiesAsync(cancellationToken);
 
         return customer.Id;
     }
