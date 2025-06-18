@@ -19,6 +19,7 @@ public class GetTopRentedCarsQueryHandler : IRequestHandler<GetTopRentedCarsQuer
             .Select(g => new TopRentedCarDto
             {
                 CarId = g.Key,
+                LocationId = g.First().Car.LocationId,
                 Model = g.First().Car.Model,
                 Type = g.First().Car.Type.Name,
                 TotalRentals = g.Count()

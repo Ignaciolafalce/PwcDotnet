@@ -21,7 +21,7 @@ public class CheckCarAvailabilityQueryHandler : IRequestHandler<CheckCarAvailabi
 
         var cars = await _carRepository.GetAvailableCarsAsync(range, filterType);
 
-        var availableCars = cars.Select(c => new AvailableCarDto { Id = c.Id, Model = c.Model, Type = c.Type.Name })
+        var availableCars = cars.Select(c => new AvailableCarDto { Id = c.Id, LocationId = c.LocationId, LocationName = c.Location.Name, Model = c.Model, Type = c.Type.Name })
                                 .ToList();
 
         return availableCars;

@@ -14,11 +14,12 @@ public class GetTopCarsByBrandModelTypeQueryHandler : IRequestHandler<GetTopCars
         var rentals = await _rentalRepository.GetRentalsByDateRangeAsync(request.FromDate, request.ToDate, request.LocationId);
 
         var grouped = rentals
-            .GroupBy(r => new { r.Car.Brand, r.Car.Model, r.Car.Type.Name, r.Car.Location.Name })
+            .GroupBy(r => new { r.Car.Brand, r.Car.Model, r.Car.Type.Name })
             .OrderByDescending(g => g.Count())
             .Select(g => new TopCarGroupDto
             {
                 Brand = g.Key.Brand,
+                LocationId = request.LocationId ?? 0, // Default to 0 if LocationId is null
                 Model = g.Key.Model,
                 Type = g.Key.Name,
                 TotalRentals = g.Count()

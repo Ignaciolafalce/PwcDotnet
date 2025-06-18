@@ -31,6 +31,8 @@ public class GetUpcomingCarServicesQueryHandler : IRequestHandler<GetUpcomingCar
                 result.Add(new UpcomingServiceCarDto
                 {
                     CarId = car.Id,
+                    LocationId = car.LocationId,
+                    LocationName = car.Location?.Name ?? "Unknown",
                     Model = car.Model,
                     Type = car.Type.Name,
                     ServiceDate = nextService.Date
