@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PwcDotnet.Application", "sr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PwcDotnet.Infrastructure", "src\PwcDotnet.Infrastructure\PwcDotnet.Infrastructure.csproj", "{F969A767-175E-4D6B-A268-414DD8AB9FE7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PwcDotnet.WebAPI", "src\PwcDotnet.WebAPI\PwcDotnet.WebAPI.csproj", "{D3D65A90-77F0-4C88-A79D-3598E2602165}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{F969A767-175E-4D6B-A268-414DD8AB9FE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F969A767-175E-4D6B-A268-414DD8AB9FE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F969A767-175E-4D6B-A268-414DD8AB9FE7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D3D65A90-77F0-4C88-A79D-3598E2602165}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D3D65A90-77F0-4C88-A79D-3598E2602165}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D3D65A90-77F0-4C88-A79D-3598E2602165}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D3D65A90-77F0-4C88-A79D-3598E2602165}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

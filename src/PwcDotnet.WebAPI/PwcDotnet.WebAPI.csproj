@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MediatR" Version="12.5.0" />
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.5" />
+	<PackageReference Include="OpenTelemetry.Exporter.Console" Version="1.12.0" />
+	<PackageReference Include="OpenTelemetry.Extensions.Hosting" Version="1.12.0" />
+	<PackageReference Include="OpenTelemetry.Instrumentation.AspNetCore" Version="1.12.0" />
+	<PackageReference Include="OpenTelemetry.Instrumentation.Http" Version="1.12.0" />
+	<PackageReference Include="OpenTelemetry.Instrumentation.SqlClient" Version="1.12.0-beta.1" />
+	<PackageReference Include="Serilog.AspNetCore" Version="9.0.0" />
+	<PackageReference Include="Serilog.Enrichers.Environment" Version="3.0.1" />
+	<PackageReference Include="Serilog.Enrichers.Process" Version="3.0.0" />
+	<PackageReference Include="Serilog.Enrichers.Thread" Version="4.0.0" />
+	<PackageReference Include="Serilog.Sinks.ApplicationInsights" Version="4.1.0-dev-02304" />
+	<PackageReference Include="Serilog.Sinks.Console" Version="6.0.1-dev-00953" />
+	<PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\PwcDotnet.Application\PwcDotnet.Application.csproj" />
+    <ProjectReference Include="..\PwcDotnet.Infrastructure\PwcDotnet.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>
