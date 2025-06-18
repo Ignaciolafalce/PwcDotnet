@@ -49,6 +49,8 @@ public static class InfrastructureServiceCollectionExtensions
             }
         });
 
+        //services.AddScoped<IUnitOfWork>(provider => provider.GetRequiredService<RentalDbContext>());
+
         // MediatR
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(IDomainMarker).Assembly));
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(IApplicationMarker).Assembly));
