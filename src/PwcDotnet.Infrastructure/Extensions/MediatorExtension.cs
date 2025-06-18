@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using PwcDotnet.Domain.Common.SeedWork;
 
 namespace PwcDotnet.Infrastructure.Extensions;
