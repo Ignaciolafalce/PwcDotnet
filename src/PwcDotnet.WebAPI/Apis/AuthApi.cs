@@ -45,11 +45,15 @@ public static class AuthApi
 
         var userName = services.CurrentUser.UserName;
         var userId = services.CurrentUser.UserId;
+        var expiration = services.CurrentUser.Expiration;
+        var email = services.CurrentUser.Email;
         services.Logger.LogInformation("Info requested for User: {UserName} Id: {UserId}", userName, userId);
         return TypedResults.Ok(new
         {
             userId,
-            userName
+            userName,
+            expiration,
+            email
         });
     }
 }

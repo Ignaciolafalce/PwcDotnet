@@ -1,6 +1,0 @@
-@PwcDotnet.WebAPI_HostAddress = http://localhost:5056
-
-GET {{PwcDotnet.WebAPI_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###

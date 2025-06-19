@@ -1,0 +1,82 @@
+﻿@PwcDotnet_HostAddress = https://localhost:44304
+# @token = {{remplace_bearer_token_below}}
+@token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9zaWQiOiJkMDUxOTA2MC0zODY1LTRjODYtOWRlNC1mYTE5NjkwYWJmNzgiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiQWRtaW4iLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJhZG1pbkBhZG1pbi5jb20iLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOlsiQWRtaW4iLCJVc2VyIiwiTWFuYWdlciJdLCJleHAiOjE3NTAzMzQxMzYsImlzcyI6IlBXQy5uZXQiLCJhdWQiOiJsb2NhbGhvc3QifQ.J3VOPJWBjGLnCQNTf5h4GlkofKrr21G43ZtH9JL8RdQ
+
+###
+# Token
+POST {{PwcDotnet_HostAddress}}/auth/login
+Content-Type: application/json
+{
+  "email": "admin@admin.com",
+  "password": "Admin123!"
+}
+
+###
+# Me
+GET {{PwcDotnet_HostAddress}}/auth/me
+Authorization: {{token}}
+
+###
+# Rentals - Register
+POST {{PwcDotnet_HostAddress}}/rentals/register
+Authorization: {{token}}
+Content-Type: application/json
+
+{
+  "customerId": 1,
+  "carId": 1,
+  "startDate": "2025-06-20T00:00:00Z",
+  "endDate": "2025-06-25T00:00:00Z"
+}
+
+###
+# Rentals - Modify
+PUT {{PwcDotnet_HostAddress}}/rentals/modify
+Authorization: {{token}}
+Content-Type: application/json
+
+{
+  "rentalId": 1,
+  "newStartDate": "2025-06-21T00:00:00Z",
+  "newEndDate": "2025-06-26T00:00:00Z"
+}
+
+###
+# Rentals - Cancel
+PUT {{PwcDotnet_HostAddress}}/rentals/cancel?RentalId=1
+Authorization: {{token}}
+
+###
+# Rentals - Get all
+GET {{PwcDotnet_HostAddress}}/rentals
+Authorization: {{token}}
+
+###
+# Dashboard - Top Rented Cars
+GET {{PwcDotnet_HostAddress}}/dashboard/top-used-cars?fromDate=2025-06-01&toDate=2025-06-22
+Authorization: {{token}}
+
+###
+# Dashboard - Top Cars by Brand
+GET {{PwcDotnet_HostAddress}}/dashboard/top-by-brand?fromDate=2025-06-01&toDate=2025-06-22
+Authorization: {{token}}
+
+###
+# Dashboard - Daily Stats
+GET {{PwcDotnet_HostAddress}}/dashboard/daily-stats?fromDate=2025-06-01&toDate=2025-06-22
+Authorization: {{token}}
+
+###
+# Customers - Get All
+GET {{PwcDotnet_HostAddress}}/customers
+Authorization: {{token}}
+
+###
+# Cars - Availability
+GET {{PwcDotnet_HostAddress}}/cars/availability?startdate=2025-06-23&enddate=2025-06-25
+Authorization: {{token}}
+
+###
+# Cars - Upcoming Services
+GET {{PwcDotnet_HostAddress}}/cars/upcoming-services?from=2025-06-01
+Authorization: {{token}}

@@ -1,4 +1,5 @@
-﻿using PwcDotnet.WebAPI.Apis.Services;
+﻿using PwcDotnet.Application.DTOs;
+using PwcDotnet.WebAPI.Apis.Services;
 using PwcDotnet.WebAPI.Auth;
 
 namespace PwcDotnet.WebAPI.Apis;
@@ -7,13 +8,22 @@ public static class RentalApi
 {
     public static RouteGroupBuilder MapRentalApi(this IEndpointRouteBuilder app)
     {
-        var group = app.MapGroup("/rentals").WithTags("Rentals").RequireAuthorization(AppPolicies.AboveManagers); 
+        var group = app.MapGroup("/rentals").WithTags("Rentals").RequireAuthorization(AppPolicies.AboveManagers);
 
+        group.MapGet("/", GetAllAsync);
         group.MapPost("/register", RegisterAsync);
         group.MapPut("/modify", ModifyAsync);
         group.MapPut("/cancel", CancelAsync);
 
         return group;
+    }
+    private static async Task<IResult> GetAllAsync(
+    [AsParameters] GetAllRentalsQuery query,
+    RentalServices services)
+    {
+        services.Logger.LogInformation("Fetching all rentals");
+        var result = await services.Mediator.Send(query);
+        return TypedResults.Ok(result);
     }
 
     public static async Task<IResult> RegisterAsync([FromBody] RegisterRentalCommand command, RentalServices services)
@@ -28,7 +38,18 @@ public static class RentalApi
             return TypedResults.Problem("Rental registration failed", statusCode: 500);
         }
 
-        return TypedResults.Ok(result);
+        // For the responses we can:
+        // Option A: Create WebApi DTOS
+        // Option B: Add TResponse types (likes DTOS) to commands - i don't do this because i dont have time
+        var rentalDto = new RentalDto { 
+            Id = result,
+            CustomerId = command.CustomerId,
+            CarId = command.CarId,
+            StartDate = command.StartDate,
+            EndDate = command.EndDate,
+        };
+
+        return TypedResults.Ok(rentalDto);
     }
 
     public static async Task<IResult> ModifyAsync([FromBody] ModifyRentalCommand command, RentalServices services)
@@ -43,7 +64,7 @@ public static class RentalApi
             return TypedResults.Problem("Rental modification failed", statusCode: 500);
         }
 
-        return TypedResults.Ok();
+        return TypedResults.Ok(new { rentalId = command.RentalId, command.NewStartDate, command.NewEndDate, command.NewCarId, modified = result });
     }
 
     public static async Task<IResult> CancelAsync([AsParameters] CancelRentalCommand command, RentalServices services)
@@ -58,6 +79,6 @@ public static class RentalApi
             return TypedResults.Problem("Rental cancellation failed", statusCode: 500);
         }
 
-        return TypedResults.Ok();
+        return TypedResults.Ok(new { rentalId = command.RentalId, canceled = result });
     }
 }

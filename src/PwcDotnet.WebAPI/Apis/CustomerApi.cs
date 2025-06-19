@@ -9,9 +9,18 @@ public static class CustomerApi
     {
         var group = app.MapGroup("/customers").WithTags("Customers").RequireAuthorization(AppPolicies.AboveManagers);
 
+        group.MapGet("/", GetAllAsync);
         group.MapPost("/register", RegisterAsync);
 
         return group;
+    }
+
+    private static async Task<IResult> GetAllAsync(
+    [AsParameters] GetAllCustomersQuery query,
+    CustomerServices services)
+    {
+        var result = await services.Mediator.Send(query);
+        return TypedResults.Ok(result);
     }
 
     public static async Task<IResult> RegisterAsync(
@@ -28,6 +37,6 @@ public static class CustomerApi
             return TypedResults.Problem("Customer registration failed", statusCode: 500);
         }
 
-        return TypedResults.Ok(result);
+        return TypedResults.Ok(new { customerId = result, command.Email, command.FullName });
     }
 }
