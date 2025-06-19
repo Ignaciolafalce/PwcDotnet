@@ -23,15 +23,15 @@ public class ModifyRentalCommandHandler : IRequestHandler<ModifyRentalCommand, b
         var newCarId = request.NewCarId ?? rental.CarId;
 
         // Exclude the current rental from the check to allow modifying its own period
-        var isConflict = await _rentalRepository.IsCarReservedInPeriodAsync(newCarId, newPeriod, excludeRentalId: rental.Id);
+        var carIsReservedInPeriod = await _rentalRepository.IsCarReservedInPeriodAsync(newCarId, newPeriod, excludeRentalId: rental.Id);
 
-        if (isConflict)
+        if (carIsReservedInPeriod)
         {
             throw new RentalDomainException("The selected car is already reserved for the requested period.");
         }
 
         var car = await _carRepository.GetByIdAsync(newCarId);
-        if (car is null || !car.IsAvailable(new DateRange(newPeriod.Start, newPeriod.End)))
+        if (car is null || !car.IsAvailableOfServices(new DateRange(newPeriod.Start, newPeriod.End)))
         {
             throw new RentalDomainException("The selected car is not available due to scheduled service.");
         }

@@ -30,8 +30,7 @@ public class ValidatorBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest
         {
             _logger.LogWarning("Validation errors - {CommandType} - Command: {@Command} - Errors: {@ValidationErrors}", typeName, request, failures);
 
-            throw new RentalDomainException(
-                $"Command Validation Errors for type {typeof(TRequest).Name}", new ValidationException("Validation exception", failures));
+            throw new ValidationException("Validation exception", failures);
         }
 
         return await next(cancellationToken);

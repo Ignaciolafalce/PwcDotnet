@@ -24,13 +24,13 @@ public class RegisterRentalCommandHandler : IRequestHandler<RegisterRentalComman
 
         var car = await _carRepository.GetByIdAsync(request.CarId);
 
-        var isCarAvailable = await _rentalRepository.IsCarAvailableAsync(request.CarId, period);
-        if (!isCarAvailable)
+        var isCarReserved = await _rentalRepository.IsCarReservedInPeriodAsync(request.CarId, period);
+        if (isCarReserved)
         {
             throw new RentalDomainException("The selected car is already reserved for the requested period.");
         }
 
-        if (car is null || !car.IsAvailable(new DateRange(period.Start, period.End))) // validate if car is in use?
+        if (car is null || !car.IsAvailableOfServices(new DateRange(period.Start, period.End))) // car has services?
         {
             throw new RentalDomainException("The selected car is not available for the requested period.");
         }
