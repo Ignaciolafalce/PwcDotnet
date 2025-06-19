@@ -12,52 +12,65 @@
 8. [Seed de datos](#seed-de-datos)
 9. [Logs](#logs)
 10. [Eventos de Dominio](#eventos-de-dominio)
-11. [Principios de diseño aplicados](#principios-de-diseño-aplicados)
-12. [Patrones utilizados](#patrones-utilizados)
-13. [Angular Challenge](#angular-challenge)
+11. [Arquitectura utilizada](#arquitectura-utilizada)
+12. [Estructura de capas](#estructura-de-capas)
+13. [Principios de diseño aplicados](#principios-de-diseño-aplicados)
+14. [Patrones utilizados](#patrones-utilizados)
+15. [Angular Challenge](#angular-challenge)
 
 ---
 
 ## Reglas de negocio
 
-Las reglas de negocio están contenidas dentro de los **Aggregates** y **Value Objects** del dominio. Por ejemplo:
-
-- Un `Rental` no puede ser creado si el auto está reservado o en mantenimiento.
-- Un `Rental` no puede ser cancelado si ya empezó.
-- Las fechas de un `RentalPeriod` deben ser válidas (End > Start).
-- El `Customer` y el `Car` deben ser válidos y existentes.
+- Un Rental no puede ser creado si el auto está reservado en esas fechas.
+- Un Rental no puede ser creado si el auto tiene servicios programados en esas fechas.
+- Un Rental no puede ser cancelado si ya ha comenzado.
+- Las fechas de un RentalPeriod deben cumplir que End > Start.
+- El Customer y Car deben existir y ser válidos.
+- Solo Rentals activos pueden ser modificados.
+- Solo Rentals con fecha de inicio en el futuro pueden cancelarse.
 
 ---
 
 ## Casos de Uso / Funcionalidades
 
-Implementados como **Commands** y **Queries** dentro de la capa `Application`:
+### Rental
 
-1. `RegisterRentalCommand`
-2. `ModifyRentalCommand`
-3. `CancelRentalCommand`
-4. `CheckCarAvailabilityQuery`
-5. `GetUpcomingCarServicesQuery`
-6. `GetTopRentedCarsQuery`
-7. `GetTopCarsByBrandModelTypeQuery`
-8. `GetDailyStatsQuery`
-9. `RegisterCustomerCommand`
-10. `LoginCommand`
-11. `GetAllRentalsQuery`
+- **Registrar alquiler**: Crea un nuevo alquiler si el auto está libre (RegisterRentalCommand)
+- **Modificar alquiler**: Cambia fechas o auto (ModifyRentalCommand)
+- **Cancelar alquiler**: Solo si no ha iniciado aún (CancelRentalCommand)
+- **Listar alquileres**: Trae todos los rentals activos o existentes (GetAllRentalsQuery)
+
+- **Registrar cliente**: Permite registrar un nuevo cliente (RegisterCustomerCommand)
+- **Listar clientes**: Devuelve los clientes existentes (GetAllCustomersQuery)
+
+- **Disponibilidad de autos**: Chequea autos disponibles en cierto rango (CheckCarAvailabilityQuery)
+- **Servicios próximos**: Devuelve autos con servicios próximos (GetUpcomingCarServicesQuery)
+
+- **Top más alquilados**: Ranking de autos más alquilados (GetTopRentedCarsQuery)
+- **Top por marca/tipo**: Ranking agrupado (GetTopCarsByBrandModelTypeQuery)
+- **Métricas diarias**: Cantidades por día y por ubicación (GetDailyStatsQuery)
+
+- **Login**: Devuelve JWT si las credenciales son correctas (TokenCommand)
+- **Me**: Retorna info del usuario actual autenticado
+- **Register**: Crea un nuevo usuario y devuelve su token (RegisterCommand)
+
+✅ **RegisterRentalCommand** fue testeado con más del 90% de cobertura (unit + integration).
 
 ---
 
 ## Configuración del entorno
 
 Requisitos:
+
 - .NET 9 SDK
 - Visual Studio 2022+ o Rider (opcional)
 
 Ejecutar:
+
 ```bash
 cd src/PwcDotnet.WebAPI
 
-# Si deseás restaurar paquetes y correr la app:
 dotnet restore
 dotnet run
 ```
@@ -66,128 +79,210 @@ dotnet run
 
 ## Migraciones y persistencia
 
-Persistencia implementada con EF Core. Se puede configurar para usar SQL Server o InMemory.
+Por defecto, el sistema utiliza una base de datos **en memoria** (`InMemoryDatabase`) para facilitar las pruebas rápidas y el testing sin necesidad de un servidor externo.  
+Si deseás usar una base de datos **persistente** (como SQL Server), seguí los siguientes pasos:
 
-Para aplicar migraciones:
-```bash
-cd src/PwcDotnet.Infrastructure
+#### Configurar la base de datos
 
-dotnet ef migrations add Initial --startup-project ../PwcDotnet.WebAPI --context RentalDbContext
+Editá el archivo `appsettings.json` para desactivar la base en memoria:
 
-dotnet ef database update --startup-project ../PwcDotnet.WebAPI
+```json
+"UseInMemoryDb": true // o false si querés usar SQL Server
 ```
+
+Si `false`(Persistir en SqlServer), agregá tu connection string en:
+
+```json
+"UseInMemoryDb": false,
+"ConnectionStrings": {
+  "PwcConnectionString": "Server=(localdb)\\MSSQLLocalDB;Database=PWCChallengeDb;Trusted_Connection=True;"
+}
+```
+
+### Aplicar migraciones:
+
+```bash
+# Update de la migracion del proyecto de infrastructura
+
+dotnet ef migrations add InitialCreate --project ../PwcDotnet.Infrastructure --startup-project .
+dotnet ef database update --project ../PwcDotnet.Infrastructure --startup-project .
+```
+> Asegurate de que el proyecto `PwcDotnet.WebAPI` esté seteado como `Startup Project` y que tenga acceso al archivo `appsettings.json`
 
 ---
 
 ## Tests
 
-Se implementaron pruebas **unitarias** y **de integración** utilizando:
+Se implementaron pruebas unitarias y de integración con:
 
-- `xUnit`
-- `Moq`
-- `FluentAssertions`
-- `WebApplicationFactory` para integración
+- xUnit
+- Moq
+- FluentAssertions
+- WebApplicationFactory (integration)
 
-Archivo .http disponible para pruebas manuales: `PwcDotnet.WebAPI.http`
+### Ejecutar tests
+```bash
+# Ejecutar tests unitarios
+dotnet test tests/PwcDotnet.UnitTests
+
+# Ejecutar tests de integración
+dotnet test tests/PwcDotnet.IntegrationTests
+```
+
+> Tambien existen 📁TestCases de endopints en el `TestCases/PwcDotnet.WebAPI.http` file del proyecto PwcDotnet.WebAPI. Ideal para probar todos los endpoints de forma rápida.
+
+#### 🧪 Unit Tests asociado al challenge
+
+- `RentalBusinessRulesTests`: Valida reglas de negocio del agregado Rental.
+- `RegisterRentalCommandHandlerTests`: Valida distintos flujos del handler (OK, auto reservado, auto en service, etc.)
+- `RentalCreatedDomainEventTests`: Verifica que se genere el evento correctamente al crear un alquiler.
+
+#### 🌐 Integration Tests asociados al challenge
+
+- Endpoint `/rentals/register` probado end-to-end (semilla, login, request, verificación).
 
 ### Ejecutar tests + cobertura
+
 ```bash
 dotnet test --collect:"XPlat Code Coverage"
 reportgenerator -reports:"**/coverage.cobertura.xml" -targetdir:coveragereport
 ```
 
-✅ La cobertura supera el **90%** en la funcionalidad `RegisterRental`
+🔎 **Cobertura del caso de uso RegisterRental supera el 90%**.
 
 ---
 
 ## Endpoints disponibles
 
-| Metodo | Path | Descripción |
-|--------|------|--------------|
-| POST | `/auth/login` | Login del usuario y devolución de JWT |
-| POST | `/auth/register` | Registro de nuevo usuario |
-| GET | `/auth/me` | Devuelve datos del usuario actual |
-| POST | `/rentals/register` | Registra un nuevo alquiler |
-| PUT | `/rentals/modify` | Modifica un alquiler existente |
-| PUT | `/rentals/cancel` | Cancela un alquiler |
-| GET | `/dashboard/top-used-cars?from=...&to=...&locationId=...` | Top autos más alquilados |
-| GET | `/dashboard/top-by-brand?from=...&to=...` | Top por marca y modelo |
-| GET | `/dashboard/daily-stats?from=...&to=...` | Métricas diarias |
-| GET | `/cars/availability?start=...&end=...&carType=...` | Disponibilidad de autos |
-| GET | `/cars/upcoming-services?from=...` | Autos con servicios próximos |
-| GET | `/customers` | Lista de clientes |
-| GET | `/rentals` | Lista de rentals |
+| Metodo | Path                                                      | Descripción                           |
+| ------ | --------------------------------------------------------- | ------------------------------------- |
+| POST   | `/auth/login`                                             | Login del usuario y devolución de JWT |
+| POST   | `/auth/register`                                          | Registro de nuevo usuario             |
+| GET    | `/auth/me`                                                | Devuelve datos del usuario actual     |
+| POST   | `/rentals/register`                                       | Registra un nuevo alquiler            |
+| PUT    | `/rentals/modify`                                         | Modifica un alquiler existente        |
+| PUT    | `/rentals/cancel`                                         | Cancela un alquiler                   |
+| GET    | `/dashboard/top-used-cars?from=...&to=...&locationId=...` | Top autos más alquilados              |
+| GET    | `/dashboard/top-by-brand?from=...&to=...`                 | Top por marca y modelo                |
+| GET    | `/dashboard/daily-stats?from=...&to=...`                  | Métricas diarias                      |
+| GET    | `/cars/availability?start=...&end=...&carType=...`        | Disponibilidad de autos               |
+| GET    | `/cars/upcoming-services?from=...`                        | Autos con servicios próximos          |
+| GET    | `/customers`                                              | Lista de clientes                     |
+| GET    | `/rentals`                                                | Lista de rentals                      |
 
 ---
 
 ## Swagger y documentación
 
-La documentación OpenAPI se encuentra disponible en:
+Disponible en:
 
 ```
 https://localhost:{PORT}/swagger
 ```
 
 Incluye:
+
 - JWT Bearer Authentication
-- Schema por endpoint
+- Schema por endpoint con input/output
 
 ---
 
 ## Seed de datos
 
-Al iniciar la aplicación se ejecuta un seed que crea:
+Se ejecuta automáticamente al correr la API. Contiene:
 
-- Usuarios y roles (`admin@admin.com` / `Admin123!`)
-- Customers, Cars, Rentals y Locations (solo datos mínimos para probar)
+- Usuario Admin: `admin@admin.com` / `Admin123!`
+- Customers, Rentals y Cars
+- Autos con servicios próximos
+
+- Se incluyen datos semilla en memoria (`SeedData.cs` en PwcDotnet.Infrastructure/Data) si activás In-Memory en `appsettings.json`.
+- Podés comentar la línea `SeedData.InitializeAsync()` en el Program.cs dE PwcDotnet.WebAPI si no querés usarlo.
 
 ---
 
 ## Logs
 
-Se utiliza **Serilog**:
+Implementado con **Serilog**:
 
-- Consola con formato enriquecido
-- Archivo local (`logs/log-*.txt`)
-- Enriquecido con datos de contexto, thread, traceId, spanId
+- Logs enriquecidos (threadId, traceId, etc.)
+- Consola
+- Archivos locales: `logs/log-*.txt`
+- Preparado para OpenTelemetry
 
 ---
 
 ## Eventos de Dominio
 
-Actualmente se dispara:
+🔄 `RentalCreatedDomainEvent` se dispara al registrar un nuevo alquiler.
 
-- `RentalCreatedDomainEvent` cuando se registra un nuevo alquiler.
+☁️ Integrado con Azure Durable Functions (AzLocal) para ejecutar side-effects -> envio de email del challenge.
 
-En futuro PR se conectará con **Azure Durable Functions** para enviar emails o ejecutar flujos externos.
+---
+
+## Arquitectura utilizada
+
+📐 Basado en Clean Architecture + DDD:
+
+
+- **Separación de responsabilidades** (Separation of Concerns)
+- **Mantenibilidad**
+- **Testing**
+- **Alta cohesión y bajo acoplamiento**
+- **Escalabilidad** y modularidad
+- **Inversión de dependencias** (Dependency Inversion Principle)
+- **Inversión de control** (Inversion of Control Principle)
+- **Independencia de frameworks**
+
+---
+
+## Estructura de capas
+
+```
+src/
+├── PwcDotnet.Domain                -> Entidades, ValueObjects, reglas del negocio
+├── PwcDotnet.Application           -> Casos de uso (CQRS), validaciones, interfaces
+├── PwcDotnet.Infrastructure        -> EF Core, configuraciones, repositorios
+├── PwcDotnet.WebAPI                -> Endpoints Minimal API, Swagger, logging, DI
+
+tests/
+├── PwcDotnet.UnitTests             -> Tests de dominio y aplicación
+├── PwcDotnet.IntegrationTests      -> Tests end-to-end con WebApplicationFactory
+```
 
 ---
 
 ## Principios de diseño aplicados
 
-- SOLID
-- KISS
-- DRY
-- YAGNI (You Ain't Gonna Need It)
-- Dependency Injection
-- Separation of Concerns
-- CQRS (Command Query Responsibility Segregation)
-- Fail Fast / Early return
-
+- **SOLID** (especialmente SRP, DIP, OCP)
+- **KISS** (Keep It Simple)
+- **YAGNI** (You Aren't Gonna Need It)
+- **DRY** (Don't Repeat Yourself)
+- **Separation of Concerns**
+- **Inversion of Control Principle**
+- **Explicit Dependencies**
+- **DDD** 
 ---
 
 ## Patrones utilizados
-
-- Repository Pattern
-- Value Objects
-- Aggregates & Domain Events (DDD)
-- Mediator Pattern (via MediatR)
-- Factory Method (para creación de entidades)
-- Logging y Exception Middleware
+- **DDD Patterns** (Aggregates, Entities, ValueObjets, etc)
+- **CQRS** (Command Query Responsibility Segregation)
+- **Repository Pattern** (incluyendo un repositorio genérico)
+- **Dependency Injection** (nativa de .NET)
+- **Validation Behavior** (usando MediatR y FluentValidation)
+- **Extension Methods** (para configuración)
+- **Unit of Work** (a través del contexto de EF Core)
+- **Minimal APIs** (.NET 8)
+- Domain Events
+- Mediator Pattern (MediatR)
+- Exception Middleware
 
 ---
 
-# Angular Challenge
+# Angular Challenge 🚧
 
-:construction: En progreso - se agregará frontend Angular y se completará esta sección.
+Sección en construcción. Aquí se documentará el frontend Angular cuando se agregue a la solución.
+
+---
+
+Gracias por leer 🚀
 

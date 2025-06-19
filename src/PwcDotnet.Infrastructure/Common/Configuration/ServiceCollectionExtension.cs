@@ -45,7 +45,7 @@ public static class InfrastructureServiceCollectionExtensions
             if (!useInMemoryDb)
             {
                 options.UseSqlServer(configuration.GetConnectionString("RentalConnectionString"));
-                logger.LogInformation("Database - ConnectionString: " + configuration.GetConnectionString("NativoConnectionString"));
+                logger.LogInformation("Database - ConnectionString: " + configuration.GetConnectionString("PwcConnectionString"));
             }
         });
 
