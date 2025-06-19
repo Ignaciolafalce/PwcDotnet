@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PwcDotnet.Domain.AggregatesModel.RentalAggregate;
 using PwcDotnet.Infrastructure.Data.EF;
+using System.Runtime.InteropServices;
 
 namespace PwcDotnet.Infrastructure.Repositories;
 
@@ -13,6 +14,7 @@ public class RentalRepository : EfRepository<Rental>, IRentalRepository
         var query = _context.Rentals
             .Include(r => r.Car)
             .ThenInclude(c => c.Location)
+            .Include(r => r.Customer)
             .AsNoTracking()
             .Where(r => r.Period.Start <= to && r.Period.End >= from);
 
@@ -32,13 +34,6 @@ public class RentalRepository : EfRepository<Rental>, IRentalRepository
             .ToListAsync();
     }
 
-    public async Task<bool> IsCarAvailableAsync(int carId, RentalPeriod period)
-    {
-        return !await _context.Rentals
-            .Where(r => r.CarId == carId && r.Status == RentalStatus.Active)
-            .AnyAsync(r => r.Period.OverlapsWith(period));
-    }
-
     public async Task<bool> IsCarReservedInPeriodAsync(int carId, RentalPeriod period, int? excludeRentalId = null)
     {
         var query = _context.Rentals
@@ -49,6 +44,8 @@ public class RentalRepository : EfRepository<Rental>, IRentalRepository
             query = query.Where(r => r.Id != excludeRentalId);
         }
 
-        return await query.AnyAsync(r => r.Period.OverlapsWith(period));
+        var list = await query.ToListAsync();
+
+        return list.Any(r => r.Period.OverlapsWith(period));
     }
 }

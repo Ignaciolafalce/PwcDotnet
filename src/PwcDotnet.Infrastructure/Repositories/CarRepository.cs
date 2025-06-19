@@ -18,7 +18,7 @@ public class CarRepository : EfRepository<Car>, ICarRepository
         return await query.AsNoTracking().ToListAsync();
     }
 
-    public async Task<IEnumerable<Car>> GetAvailableCarsAsync(DateRange range, CarType? filterType = null)
+    public async Task<IEnumerable<Car>> GetAvailableOfServicesCarsAsync(DateRange range, CarType? filterType = null)
     {
         var cars = await _context.Cars
             .Include(c => c.Services)
@@ -28,11 +28,12 @@ public class CarRepository : EfRepository<Car>, ICarRepository
 
         return cars.Where(c =>
             (filterType == null || c.Type == filterType) &&
-            c.IsAvailable(range));
+            c.IsAvailableOfServices(range));
     }
 
     public async Task<IEnumerable<Car>> GetCarsWithServicesInRangeAsync(DateRange range)
     {
+       
         return await _context.Cars
             .Include(c => c.Services.Where(s => range.Contains(s.Date)))
             .Include(c => c.Location)
