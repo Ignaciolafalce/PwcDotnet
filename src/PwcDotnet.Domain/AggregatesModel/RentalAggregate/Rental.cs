@@ -38,7 +38,6 @@ public class Rental : Entity, IAggregateRoot
         return new Rental(customerId.Value, carId.Value, period);
     }
 
-
     public void ChangePeriod(RentalPeriod newPeriod) // Modify the rental period
     {
         if (Status != RentalStatus.Active)

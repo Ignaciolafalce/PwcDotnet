@@ -40,7 +40,7 @@ public class Car : Entity, IAggregateRoot
         return _services.Any(s => range.Contains(s.Date));
     }
 
-    public bool IsAvailable(DateRange range)
+    public bool IsAvailableOfServices(DateRange range)
     {
         return !HasServiceIn(range);
     }
