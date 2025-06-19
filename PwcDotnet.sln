@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.14.36127.28 d17.14
+VisualStudioVersion = 17.14.36127.28
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PwcDotnet.Domain", "src\PwcDotnet.Domain\PwcDotnet.Domain.csproj", "{2D8B07A7-12ED-4F5C-83F7-C2BEC3AF9F30}"
 EndProject
@@ -10,6 +10,12 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PwcDotnet.Infrastructure", "src\PwcDotnet.Infrastructure\PwcDotnet.Infrastructure.csproj", "{F969A767-175E-4D6B-A268-414DD8AB9FE7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PwcDotnet.WebAPI", "src\PwcDotnet.WebAPI\PwcDotnet.WebAPI.csproj", "{D3D65A90-77F0-4C88-A79D-3598E2602165}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PwcDotnet.UnitTests", "tests\PwcDotnet.UnitTests\PwcDotnet.UnitTests.csproj", "{5D101B2E-916B-458E-AFD8-DDE045CCC01C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PwcDotnet.IntegrationTests", "tests\PwcDotnet.IntegrationTests\PwcDotnet.IntegrationTests.csproj", "{1A09C9B0-7951-4BF0-9AE9-8EE8EE7BB056}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,9 +39,21 @@ Global
 		{D3D65A90-77F0-4C88-A79D-3598E2602165}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D3D65A90-77F0-4C88-A79D-3598E2602165}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D3D65A90-77F0-4C88-A79D-3598E2602165}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5D101B2E-916B-458E-AFD8-DDE045CCC01C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5D101B2E-916B-458E-AFD8-DDE045CCC01C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5D101B2E-916B-458E-AFD8-DDE045CCC01C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5D101B2E-916B-458E-AFD8-DDE045CCC01C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A09C9B0-7951-4BF0-9AE9-8EE8EE7BB056}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A09C9B0-7951-4BF0-9AE9-8EE8EE7BB056}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A09C9B0-7951-4BF0-9AE9-8EE8EE7BB056}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A09C9B0-7951-4BF0-9AE9-8EE8EE7BB056}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{5D101B2E-916B-458E-AFD8-DDE045CCC01C} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{1A09C9B0-7951-4BF0-9AE9-8EE8EE7BB056} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {423BD59D-7116-4345-976B-6D2F219A6F9B}
