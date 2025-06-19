@@ -20,6 +20,7 @@ public class GetTopRentedCarsQueryHandler : IRequestHandler<GetTopRentedCarsQuer
             {
                 CarId = g.Key,
                 LocationId = g.First().Car.LocationId,
+                LocationName = g.First().Car.Location.Name,
                 Model = g.First().Car.Model,
                 Type = g.First().Car.Type.Name,
                 TotalRentals = g.Count()

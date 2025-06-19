@@ -19,7 +19,8 @@ public class GetTopCarsByBrandModelTypeQueryHandler : IRequestHandler<GetTopCars
             .Select(g => new TopCarGroupDto
             {
                 Brand = g.Key.Brand,
-                LocationId = request.LocationId ?? 0, // Default to 0 if LocationId is null
+                LocationId = g.First().Car.Location.Id, // Default to 0 if LocationId is null
+                LocationName = g.First().Car.Location.Name, // Default to 0 if LocationId is null
                 Model = g.Key.Model,
                 Type = g.Key.Name,
                 TotalRentals = g.Count()
