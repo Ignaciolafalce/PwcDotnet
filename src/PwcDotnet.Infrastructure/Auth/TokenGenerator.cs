@@ -22,7 +22,8 @@ public class TokenGenerator : ITokenGenerator
         var claims = new List<Claim>
         {
             new Claim(ClaimTypes.Sid, user.Id.ToString()),
-            new Claim(ClaimTypes.Name, user.UserName!)
+            new Claim(ClaimTypes.Name, user.UserName!),
+            new Claim(ClaimTypes.Email, user.Email!)
         };
 
         claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));

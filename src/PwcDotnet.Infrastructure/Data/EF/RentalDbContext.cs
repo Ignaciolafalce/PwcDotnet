@@ -25,11 +25,11 @@ public class RentalDbContext : IdentityDbContext<ApplicationUser, ApplicationRol
         _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
     }
 
-    public DbSet<Customer> Customers { get; set; }
-    public DbSet<Car> Cars { get; set; }
-    public DbSet<Rental> Rentals { get; set; }
-    public DbSet<Service> Services { get; set; }
-    public DbSet<Location> Locations { get; set; }
+    public DbSet<Customer> Customers => Set<Customer>();
+    public DbSet<Car> Cars => Set<Car>();
+    public DbSet<Rental> Rentals => Set<Rental>();
+    public DbSet<Service> Services => Set<Service>();
+    public DbSet<Location> Locations => Set<Location>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
