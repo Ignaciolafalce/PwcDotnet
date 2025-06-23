@@ -259,6 +259,8 @@ src/
 ├── PwcDotnet.Application           -> Casos de uso (CQRS), validaciones, interfaces
 ├── PwcDotnet.Infrastructure        -> EF Core, configuraciones, repositorios
 ├── PwcDotnet.WebAPI                -> Endpoints Minimal API, Swagger, logging, DI
+├── PwcDotnet.AzureDurableFunctions               -> Orchestrators, activities (ej SendEmailOrchestrator and activities)
+├── PwcDotnet.AngularSPA               -> SPA Client
 
 tests/
 ├── PwcDotnet.UnitTests             -> Tests de dominio y aplicación
