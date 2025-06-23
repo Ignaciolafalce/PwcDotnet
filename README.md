@@ -12,11 +12,12 @@
 8. [Seed de datos](#seed-de-datos)
 9. [Logs](#logs)
 10. [Eventos de Dominio](#eventos-de-dominio)
-11. [Arquitectura utilizada](#arquitectura-utilizada)
-12. [Estructura de capas](#estructura-de-capas)
-13. [Principios de diseño aplicados](#principios-de-diseño-aplicados)
-14. [Patrones utilizados](#patrones-utilizados)
-15. [Angular Challenge](#angular-challenge)
+11. [Caching](#caching)
+12. [Arquitectura utilizada](#arquitectura-utilizada)
+13. [Estructura de capas](#estructura-de-capas)
+14. [Principios de diseño aplicados](#principios-de-diseño-aplicados)
+15. [Patrones utilizados](#patrones-utilizados)
+16. [Angular Challenge](#angular-challenge)
 
 ---
 
