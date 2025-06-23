@@ -74,6 +74,10 @@ cd src/PwcDotnet.WebAPI
 dotnet restore
 dotnet run
 ```
+`AzureDurableFunctions:Enable` está activado en `appsettings.json`, también deberás ejecutar el proyecto `PwcDotnet.AzureDurableFunctions` pudiendo poner como startup de la soluccion los dos proyectos incluso.
+
+Si estas en visual studio asegurate por lo menos de que tu Stratup project sea minimamente PwcDotne.WebAPI (en caso de usar azuredurablefunctions local agregar el proyecto al startup de la solucion).
+
 
 ---
 
@@ -215,7 +219,19 @@ Implementado con **Serilog**:
 
 🔄 `RentalCreatedDomainEvent` se dispara al registrar un nuevo alquiler.
 
-☁️ Integrado con Azure Durable Functions (AzLocal) para ejecutar side-effects -> envio de email del challenge.
+> ☁️ Integrado con Azure Durable Functions (AzLocal) para ejecutar side-effects -> envio de email del challenge.
+> 📬 El email del cliente se recupera dinámicamente desde el repositorio antes de disparar la Durable Function.
+
+### Configuración
+
+```json
+"AzureDurableFunctions": {
+  "Enable": true,
+  "Url": "http://localhost:7081/api"
+}
+```
+
+> Si `Enable` está en `true`, el DomainEvent llamará al endpoint HTTP `SendRentalEmailOrchestration_HttpStart` y disparará una orquestación Durable.
 
 ---
 
