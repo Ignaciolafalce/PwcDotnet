@@ -267,6 +267,83 @@ tests/
 
 ---
 
+## 🧠 Caching
+
+Se aplicaron dos mecanismos de cacheo para mejorar la performance del sistema:
+
+---
+
+### ✅ 1. Response Caching (Minimal API)
+
+Se implementó un **middleware personalizado** para simular el atributo `[ResponseCache]`, ya que en Minimal APIs no está disponible por defecto.
+
+#### 📦 Implementación
+
+```csharp
+// Extension en WebAPI.Extensions.EndpointCachingExtensions.cs
+public static class EndpointCachingExtensions
+{
+    public static RouteHandlerBuilder WithResponseCache(this RouteHandlerBuilder builder, int seconds)
+    {
+        return builder.AddEndpointFilter(async (context, next) =>
+        {
+            var httpContext = context.HttpContext;
+            httpContext.Response.GetTypedHeaders().CacheControl = new CacheControlHeaderValue
+            {
+                Public = true,
+                MaxAge = TimeSpan.FromSeconds(seconds)
+            };
+            return await next(context);
+        });
+    }
+}
+```
+
+#### 💪 Ejemplo de uso
+
+```csharp
+group.MapGet("/", GetAllAsync).WithResponseCache(1);
+```
+
+> Este ejemplo aplica un cache público por 1 segundo al endpoint `/customers`.
+
+---
+
+### ✅ 2. In-Memory Caching en capa de Aplicación
+
+Se utilizó `IMemoryCache` para almacenar temporalmente los resultados de la query `GetAllCustomersQuery`, mejorando la velocidad y reduciendo lecturas innecesarias a base de datos.
+
+#### 📦 Implementación
+
+```csharp
+public async Task<List<CustomerDto>> Handle(GetAllCustomersQuery request, CancellationToken cancellationToken)
+{
+    var customerDtoList = await _cache.GetOrCreateAsync("customers_cache", async entry =>
+    {
+        entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(3);
+
+        var customers = await _customerRepository.GetAllAsync();
+        return customers.Select(c => new CustomerDto
+        {
+            Id = c.Id,
+            FullName = c.FullName,
+            Email = c.Email
+        }).ToList();
+    });
+
+    return customerDtoList ?? new List<CustomerDto>();
+}
+```
+
+> Se utiliza una key `"customers_cache"` con una expiración absoluta de 3 segundos.
+
+> 💡 Ambos mecanismos son independientes y complementarios:
+>
+> - `IMemoryCache`: actúa en la capa de **Aplicación**.
+> - `ResponseCache`: actúa sobre la **respuesta HTTP** (capa Web/API).
+
+
+
 ## Principios de diseño aplicados
 
 - **SOLID** (especialmente SRP, DIP, OCP)

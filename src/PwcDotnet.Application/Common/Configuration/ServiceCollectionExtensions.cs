@@ -17,6 +17,8 @@ public static class ServiceCollectionExtensions
 
         logger.LogInformation("Starting Application configuration...");
 
+        services.AddMemoryCache();
+
         // CQRS con MediatR
         services.AddMediatR(cfg =>
             cfg.RegisterServicesFromAssembly(typeof(IApplicationMarker).Assembly));

@@ -1,5 +1,6 @@
 ﻿using PwcDotnet.WebAPI.Apis.Services;
 using PwcDotnet.WebAPI.Auth;
+using PwcDotnet.WebAPI.Extensions;
 
 namespace PwcDotnet.WebAPI.Apis;
 
@@ -9,7 +10,7 @@ public static class CustomerApi
     {
         var group = app.MapGroup("/customers").WithTags("Customers").RequireAuthorization(AppPolicies.AboveManagers);
 
-        group.MapGet("/", GetAllAsync);
+        group.MapGet("/", GetAllAsync).WithResponseCache(1);
         group.MapPost("/register", RegisterAsync);
 
         return group;

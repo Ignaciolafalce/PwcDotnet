@@ -40,6 +40,7 @@ public class Program
         // Application and Infrastructure services
         builder.Services.AddApplication(builder.Configuration);
         builder.Services.AddInfrastructure(builder.Configuration);
+        builder.Services.AddResponseCaching();
 
         builder.Services.AddAppAuthorization();
 
@@ -135,6 +136,7 @@ public class Program
 
         //app.UseAuthorization();  In Application Layer, we have added the authorization policy
 
+        app.UseResponseCaching();
         app.MapAuthApi();
         app.MapRentalApi();
         app.MapDashboardApi();
