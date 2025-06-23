@@ -27,6 +27,16 @@ public class Program
 
         Log.Information("Configuring Services");
 
+        // CQRS - Just testing purpose otherwise must be modified
+        builder.Services.AddCors(options => 
+        {
+            options.AddPolicy("AllowAllOrigins", builder =>
+            {
+                builder.AllowAnyOrigin()
+                       .AllowAnyMethod()
+                       .AllowAnyHeader();
+            });
+        });
         // Application and Infrastructure services
         builder.Services.AddApplication(builder.Configuration);
         builder.Services.AddInfrastructure(builder.Configuration);
@@ -105,6 +115,8 @@ public class Program
             //app.UseSwagger();
             //app.UseSwaggerUI();
         }
+
+        app.UseCors("AllowAllOrigins"); // Enable CORS policy just o allow all origins for testing purposes, most be Specific in production
 
         app.UseSwagger();
         app.UseSwaggerUI(options =>

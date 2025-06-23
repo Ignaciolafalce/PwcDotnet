@@ -2,6 +2,7 @@ using FluentAssertions;
 using Microsoft.Extensions.Logging;
 using Moq;
 using PwcDotnet.Application.DomainEventHandlers;
+using PwcDotnet.Application.Interfaces;
 using PwcDotnet.Domain.AggregatesModel.RentalAggregate;
 using PwcDotnet.Domain.Events;
 
@@ -12,7 +13,8 @@ public class RentalCreatedDomainEventHandlerTests
     public async Task Handle_Should_Complete_Without_Exception()
     {
         var loggerMock = new Mock<ILogger<RentalCreatedDomainEventHandler>>();
-        var handler = new RentalCreatedDomainEventHandler(loggerMock.Object);
+        var serviceNotificationMock = new Mock<INotificationService>();
+        var handler = new RentalCreatedDomainEventHandler(loggerMock.Object, serviceNotificationMock.Object);
 
         var rental = Rental.Create(1, 2, new RentalPeriod(DateTime.UtcNow, DateTime.UtcNow.AddDays(3)));
         var domainEvent = new RentalCreatedDomainEvent(rental);

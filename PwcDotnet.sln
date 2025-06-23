@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PwcDotnet.IntegrationTests"
 EndProject
 Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "PwcDotnet.AngularSPA", "src\PwcDotnet.AngularSPA\PwcDotnet.AngularSPA.esproj", "{97025AAC-C0D1-7FFF-289F-311B531DA62B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PwcDotnet.AzureDurableFunctions", "src\PwcDotnet.AzureDurableFunctions\PwcDotnet.AzureDurableFunctions.csproj", "{96A564F0-4A90-42E7-AAFC-8E4EBDDF3FC2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -55,6 +57,10 @@ Global
 		{97025AAC-C0D1-7FFF-289F-311B531DA62B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{97025AAC-C0D1-7FFF-289F-311B531DA62B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{97025AAC-C0D1-7FFF-289F-311B531DA62B}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{96A564F0-4A90-42E7-AAFC-8E4EBDDF3FC2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{96A564F0-4A90-42E7-AAFC-8E4EBDDF3FC2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{96A564F0-4A90-42E7-AAFC-8E4EBDDF3FC2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{96A564F0-4A90-42E7-AAFC-8E4EBDDF3FC2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

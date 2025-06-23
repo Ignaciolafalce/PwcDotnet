@@ -1,6 +1,6 @@
 ﻿@PwcDotnet_HostAddress = https://localhost:44304
 # @token = {{remplace_bearer_token_below}}
-@token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9zaWQiOiJkMDUxOTA2MC0zODY1LTRjODYtOWRlNC1mYTE5NjkwYWJmNzgiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiQWRtaW4iLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJhZG1pbkBhZG1pbi5jb20iLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOlsiQWRtaW4iLCJVc2VyIiwiTWFuYWdlciJdLCJleHAiOjE3NTAzMzQxMzYsImlzcyI6IlBXQy5uZXQiLCJhdWQiOiJsb2NhbGhvc3QifQ.J3VOPJWBjGLnCQNTf5h4GlkofKrr21G43ZtH9JL8RdQ
+@token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9zaWQiOiIwOGI2YzZlMS00ODc3LTRjMDktYWE2NS1iZDM4YzBiZTgzNmQiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiQWRtaW4iLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJhZG1pbkBhZG1pbi5jb20iLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOlsiQWRtaW4iLCJVc2VyIiwiTWFuYWdlciJdLCJleHAiOjE3NTA2ODgzMTAsImlzcyI6IlBXQy5uZXQiLCJhdWQiOiJsb2NhbGhvc3QifQ.p79CgxrvucEnpPz-TkVPhYkLdXny-1S0PhkolwD1Cfw
 
 ###
 # Token
@@ -25,8 +25,8 @@ Content-Type: application/json
 {
   "customerId": 1,
   "carId": 1,
-  "startDate": "2025-06-20T00:00:00Z",
-  "endDate": "2025-06-25T00:00:00Z"
+  "startDate": "2032-09-24T00:00:00Z",
+  "endDate": "2040-06-28T00:00:00Z"
 }
 
 ###
@@ -80,3 +80,14 @@ Authorization: {{token}}
 # Cars - Upcoming Services
 GET {{PwcDotnet_HostAddress}}/cars/upcoming-services?from=2025-06-01
 Authorization: {{token}}
+
+###
+# SendRentalEmail orchestration test
+POST http://localhost:7081/api/SendRentalEmailOrchestration_HttpStart
+Content-Type: application/json
+{
+  "rentalId": 42,
+  "email": "test@mail.com",
+  "startDate": "2025-07-01T00:00:00Z",
+  "endDate": "2025-07-10T00:00:00Z"
+}

@@ -14,6 +14,7 @@ using PwcDotnet.Domain.AggregatesModel.RentalAggregate;
 using PwcDotnet.Infrastructure.Auth;
 using PwcDotnet.Infrastructure.Data.EF;
 using PwcDotnet.Infrastructure.Repositories;
+using PwcDotnet.Infrastructure.Services;
 using System.Text;
 
 namespace PwcDotnet.Infrastructure.Common.Configuration;
@@ -50,6 +51,8 @@ public static class InfrastructureServiceCollectionExtensions
         });
 
         //services.AddScoped<IUnitOfWork>(provider => provider.GetRequiredService<RentalDbContext>());
+
+        services.AddHttpClient<INotificationService, DurableNotificationService>();
 
         // MediatR
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(IDomainMarker).Assembly));
